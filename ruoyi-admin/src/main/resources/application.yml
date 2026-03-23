@@ -1,0 +1,56 @@
+ruoyi:
+  name: template-backend
+  version: 1.0.0
+  copyrightYear: 2026
+  profile: D:/z-tools/uploadPath
+  addressEnabled: false
+
+server:
+  port: 8086
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+
+logging:
+  level:
+    com.ruoyi: info
+    org.springframework: warn
+
+spring:
+  profiles:
+    active: dev
+  messages:
+    basename: i18n/messages
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+mybatis:
+  typeAliasesPackage: com.ruoyi.system.domain
+  mapperLocations: classpath*:mapper/app/*Mapper.xml
+  configLocation: classpath:mybatis/mybatis-config.xml
+
+token:
+  header: Authorization
+  secret: change-this-secret-in-production
+  expireTime: 120
+
+referer:
+  enabled: false
+  allowed-domains: localhost,127.0.0.1
+
+xss:
+  enabled: false
+  excludes: /app/auth/login
+  urlPatterns: /app/*
+
+wx:
+  miniapp:
+    app-id: ${WX_MINIAPP_APP_ID:}
+    app-secret: ${WX_MINIAPP_APP_SECRET:}
+    mock-login: ${WX_MINIAPP_MOCK_LOGIN:true}
