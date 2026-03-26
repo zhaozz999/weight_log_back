@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.HttpStatus;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.system.domain.AppUser;
 import com.ruoyi.system.mapper.AppUserMapper;
 import com.ruoyi.system.service.IAppUserService;
@@ -44,7 +44,7 @@ public class AppUserServiceImpl implements IAppUserService
         AppUser duplicate = appUserMapper.selectByOpenId(appUser.getOpenId());
         if (duplicate != null)
         {
-            throw new ServiceException("openId 已存在，不能重复创建用户", HttpStatus.BAD_REQUEST);
+            throw new ServiceException("openId already exists", HttpStatus.BAD_REQUEST);
         }
 
         appUser.setStatus(StringUtils.isNotEmpty(appUser.getStatus()) ? appUser.getStatus() : Constants.SUCCESS);
@@ -60,12 +60,29 @@ public class AppUserServiceImpl implements IAppUserService
         AppUser current = appUserMapper.selectByUserId(userId);
         if (current == null)
         {
-            throw new ServiceException("用户不存在", HttpStatus.NOT_FOUND);
+            throw new ServiceException("User not found", HttpStatus.NOT_FOUND);
         }
         current.setNickName(appUser.getNickName());
         current.setAvatarUrl(appUser.getAvatarUrl());
+        current.setGender(appUser.getGender());
         current.setStatus(appUser.getStatus());
         current.setRemark(appUser.getRemark());
+        current.setUpdateTime(DateUtils.getNowDate());
+        appUserMapper.updateAppUser(current);
+        return appUserMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public AppUser updateProfile(Long userId, String nickName, String avatarUrl, String gender)
+    {
+        AppUser current = appUserMapper.selectByUserId(userId);
+        if (current == null)
+        {
+            throw new ServiceException("User not found", HttpStatus.NOT_FOUND);
+        }
+        current.setNickName(nickName);
+        current.setAvatarUrl(avatarUrl);
+        current.setGender(gender);
         current.setUpdateTime(DateUtils.getNowDate());
         appUserMapper.updateAppUser(current);
         return appUserMapper.selectByUserId(userId);
@@ -77,7 +94,7 @@ public class AppUserServiceImpl implements IAppUserService
         AppUser current = appUserMapper.selectByUserId(userId);
         if (current == null)
         {
-            throw new ServiceException("用户不存在", HttpStatus.NOT_FOUND);
+            throw new ServiceException("User not found", HttpStatus.NOT_FOUND);
         }
         appUserMapper.deleteByUserId(userId);
     }
@@ -93,6 +110,7 @@ public class AppUserServiceImpl implements IAppUserService
             appUser.setOpenId(openId);
             appUser.setNickName(StringUtils.isNotEmpty(nickName) ? nickName : "MiniAppUser");
             appUser.setAvatarUrl(avatarUrl);
+            appUser.setGender(null);
             appUser.setStatus(Constants.SUCCESS);
             appUser.setLastLoginTime(now);
             appUser.setCreateTime(now);

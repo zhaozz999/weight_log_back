@@ -15,6 +15,8 @@ public interface IAppUserService
 
     AppUser updateUser(Long userId, AppUser appUser);
 
+    AppUser updateProfile(Long userId, String nickName, String avatarUrl, String gender);
+
     void deleteUser(Long userId);
 
     AppUser createOrUpdateFromLogin(String openId, String nickName, String avatarUrl);

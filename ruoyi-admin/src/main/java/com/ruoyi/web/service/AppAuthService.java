@@ -23,6 +23,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.domain.AppUser;
 import com.ruoyi.system.service.IAppUserService;
+import com.ruoyi.web.domain.request.AppProfileUpdateRequest;
 import com.ruoyi.web.domain.request.MiniappLoginBody;
 import com.ruoyi.web.domain.response.AuthCurrentUserResponse;
 import com.ruoyi.web.domain.response.AuthLoginResponse;
@@ -77,6 +78,19 @@ public class AppAuthService
         {
             throw new ServiceException("User not found");
         }
+        AuthCurrentUserResponse response = new AuthCurrentUserResponse();
+        response.setUser(appUser);
+        response.setPermissions(Collections.emptySet());
+        return response;
+    }
+
+    public AuthCurrentUserResponse updateCurrentUser(AppProfileUpdateRequest request)
+    {
+        AppUser appUser = appUserService.updateProfile(
+                SecurityUtils.getUserId(),
+                request.getNickName(),
+                request.getAvatarUrl(),
+                request.getGender());
         AuthCurrentUserResponse response = new AuthCurrentUserResponse();
         response.setUser(appUser);
         response.setPermissions(Collections.emptySet());

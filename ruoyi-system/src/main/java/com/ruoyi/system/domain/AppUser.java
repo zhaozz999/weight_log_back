@@ -15,6 +15,8 @@ public class AppUser extends BaseEntity
 
     private String avatarUrl;
 
+    private String gender;
+
     private String status;
 
     private Date lastLoginTime;
@@ -57,6 +59,16 @@ public class AppUser extends BaseEntity
     public void setAvatarUrl(String avatarUrl)
     {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender(String gender)
+    {
+        this.gender = gender;
     }
 
     public String getStatus()

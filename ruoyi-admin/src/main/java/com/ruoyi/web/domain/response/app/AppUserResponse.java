@@ -12,6 +12,8 @@ public class AppUserResponse
 
     private String avatarUrl;
 
+    private String gender;
+
     private String status;
 
     private Date lastLoginTime;
@@ -60,6 +62,16 @@ public class AppUserResponse
     public void setAvatarUrl(String avatarUrl)
     {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender(String gender)
+    {
+        this.gender = gender;
     }
 
     public String getStatus()

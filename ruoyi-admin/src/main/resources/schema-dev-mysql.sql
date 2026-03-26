@@ -3,6 +3,7 @@ create table if not exists app_user (
     open_id varchar(64) not null,
     nick_name varchar(64) not null,
     avatar_url varchar(255) null,
+    gender varchar(16) null,
     status char(1) not null default '0',
     last_login_time datetime null,
     create_time datetime null,
